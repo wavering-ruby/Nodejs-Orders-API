@@ -27,7 +27,7 @@ app.post("/order", async (req, res) => {
     // console.log(numeroPedido)
 
     await pool.query(
-        `INSERT INTO orders (orderId, value, creationDate) VALUES ($1, $2, $3)`,
+        `INSERT INTO orders (orderId, value, creationDate) VALUES ($1, $2, $3);`,
         [numeroPedido, valorTotal, dataCriacao]
     )
 
@@ -41,7 +41,7 @@ app.post("/order", async (req, res) => {
 
     for(const element of itemsMapped){
         await pool.query(
-            `INSERT INTO items (orderId, productId, quantity, price) VALUES ($1, $2, $3, $4)`,
+            `INSERT INTO items (orderId, productId, quantity, price) VALUES ($1, $2, $3, $4);`,
             element
         );
     }
@@ -51,11 +51,17 @@ app.post("/order", async (req, res) => {
     res.status(201).json({ message: message });
 });
 
+app.get(`/order/list`, async (req, res) => {
+    const result = await pool.query("SELECT * FROM orders;");
+
+    res.json(result.rows);
+});
+
 app.get(`/order/:order_id`, async (req, res) =>{
     const { order_id } = req.params;
 
     const result = await pool.query(
-        "SELECT * FROM orders WHERE orderId = $1",
+        "SELECT * FROM orders WHERE orderId = $1;",
         [order_id]
     );
 
