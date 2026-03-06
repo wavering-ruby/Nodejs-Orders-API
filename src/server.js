@@ -51,6 +51,17 @@ app.post("/order", async (req, res) => {
     res.status(201).json({ message: message });
 });
 
+app.get(`/order/:order_id`, async (req, res) =>{
+    const { order_id } = req.params;
+
+    const result = await pool.query(
+        "SELECT * FROM orders WHERE orderId = $1",
+        [order_id]
+    );
+
+    res.json(result.rows);
+});
+
 app.listen(PORT, () => {
     console.log(`Server running in http://localhost:${PORT}`);
 });
