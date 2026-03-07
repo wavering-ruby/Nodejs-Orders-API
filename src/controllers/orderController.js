@@ -1,23 +1,62 @@
 import * as orderService from "../services/orderService.js";
 
 export async function postOrder(req, res){
-    const data = req.body;
+    try {
+        const data = req.body;
 
-    await orderService.postOrder(data);
+        await orderService.postOrder(data);
 
-    res.status(201).json({ message: "Order criada!"});
+        res.status(201).json({ message: "Order created!"});
+    } catch(error) {
+        console.error(error);
+
+        if(error.code === "23505"){ // Code of Postgre to duplicated register
+            return res.status(409).json({
+                message: "Order already registered!"
+            });
+        }
+
+        res.status(500).json({
+            message: "Error creating order!"
+        });
+    }
+    
 }
 
 export async function getOrders(req, res){
-    const orders = await orderService.getOrders();
+    try {
+        const orders = await orderService.getOrders();
+        
+        res.json(orders);
+    } catch(error) {
+        console.error(error);
 
-    res.json(orders);
+        res.status(500).json({
+            message: "Error fetching order!"
+        });
+    }
+
 } 
 
 export async function getOrderById(req, res){
-    const { order_id } = req.params;
+    try {
+        const { order_id } = req.params;
 
-    const order = await orderService.getOrderById(order_id);
+        const order = await orderService.getOrderById(order_id);
 
-    res.json(order);
+        if(!order || order.length === 0){
+            return res.status(404).json({
+                message: "Order not found!"
+            });
+        }
+
+        res.json(order);
+    } catch(error) {
+        console.error(error);
+
+        res.status(500).json({
+            message: "Error fetching order!"
+        })
+    }
+    
 }

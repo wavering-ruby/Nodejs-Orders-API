@@ -1,6 +1,7 @@
 import * as orderRepository from "../repositories/orderRepository.js";
 
 export async function postOrder(data){
+    // Doing the post code with a mapping on the body json
     const { numeroPedido, valorTotal, dataCriacao, items } = data;
 
     await orderRepository.insertOrder(numeroPedido, valorTotal, dataCriacao);
