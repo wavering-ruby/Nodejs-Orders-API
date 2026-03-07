@@ -78,3 +78,17 @@ export async function putOrder(req, res){
     }
 
 }
+
+export async function deleteOrder(req, res){
+    try {
+        const { order_id } = req.params;
+        
+        await orderService.deleteOrder(order_id);
+
+        res.status(200).send("Order deleted!");
+    } catch(error) {
+        console.error(error);
+        
+        res.status(500).send("Error deleting the order!");
+    }
+}

@@ -42,3 +42,8 @@ export async function putOrders(data){
         )
     }
 }
+
+export async function deleteOrder(id){
+    await orderRepository.deleteItemsByOrder(id);
+    await orderRepository.deleteOrderById(id);
+}
