@@ -23,3 +23,22 @@ export async function getOrders(){
 export async function getOrderById(id){
     return orderRepository.getOrderById(id);
 }
+
+export async function putOrders(data){
+    // Doing the put code with a mapping on the body json
+    const { numeroPedido, valorTotal, dataCriacao, items} = data;
+
+    await orderRepository.putOrders(numeroPedido, valorTotal, dataCriacao);
+
+    // Removing all the older items in the order
+    await orderRepository.deleteItemsByOrder(numeroPedido);
+
+    for(const item of items){
+        await orderRepository.postItem(
+            numeroPedido,
+            item.idItem,
+            item.quantidadeItem,
+            item.valorItem
+        )
+    }
+}

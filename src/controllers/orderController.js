@@ -57,6 +57,24 @@ export async function getOrderById(req, res){
         res.status(500).json({
             message: "Error fetching order!"
         })
+    }   
+}
+
+export async function putOrder(req, res){
+    try {
+        const { order_id } = req.params;
+        const body = req.body;
+
+        await orderService.putOrders({
+            ...body,
+            numeroPedido: order_id
+        });
+
+        res.status(200).send("Order updated!");
+    } catch(error) {
+        console.error(error);
+
+        res.status(500).send("Error updating the order!");
     }
-    
+
 }

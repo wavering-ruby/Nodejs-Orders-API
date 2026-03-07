@@ -14,6 +14,7 @@ CREATE TABLE items (
     productId INTEGER,
     quantity INTEGER,
     price FLOAT,
+	PRIMARY KEY (orderId, productId), /* Adicionado para poder fazer a relação de edit dos items */
     FOREIGN KEY (orderId) REFERENCES orders(orderId)
 )
 
