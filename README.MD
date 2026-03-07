@@ -12,6 +12,7 @@ This project uses Node.js and PostgreSQL.  All endpoints are documented in a Pos
 - [Installation](#installation)
 - [API Documentation](./docs/api-documentation.md)
 - [PostgreSQL Scripts](./database/schema.sql)
+- [Running the API](#running-the-api)
 
 ## Installation
 > [!IMPORTANT]
@@ -71,3 +72,23 @@ http://localhost:3000
 You can test all endpoints using the Postman collection available in: [Postman-JSON](./postman/Node.js%20API.postman_collection.json).
 
 </details>
+
+## Running the API
+
+Start the server using:
+
+```bash
+npm start
+```
+
+For development mode with automatic reload:
+
+```bash
+npm run dev
+```
+
+The API will be available at:
+
+```
+http://localhost:3000
+```
