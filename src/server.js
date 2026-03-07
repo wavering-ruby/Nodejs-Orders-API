@@ -4,6 +4,7 @@ dotenv.config();
 
 import express from "express";
 import { pool } from "./database.js";
+import orderRoutes from "./routes/orderRoutes.js"
 
 const app = express();
 const PORT = process.env.BACKEND_PORT;
@@ -15,58 +16,7 @@ app.get("/", (req, res) => {
     res.send("Backend online and running!");
 });
 
-app.post("/order", async (req, res) => {
-    const data = req.body;
-
-    // Debug
-    //console.log(data);
-
-    const { numeroPedido, valorTotal, dataCriacao, items } = data;
-
-    // Debug
-    // console.log(numeroPedido)
-
-    await pool.query(
-        `INSERT INTO orders (orderId, value, creationDate) VALUES ($1, $2, $3);`,
-        [numeroPedido, valorTotal, dataCriacao]
-    )
-
-    // Mapping of items by clonning the req array
-    const itemsMapped = items.map(item => [
-        numeroPedido,
-        item.idItem,
-        item.quantidadeItem,
-        item.valorItem
-    ]);
-
-    for(const element of itemsMapped){
-        await pool.query(
-            `INSERT INTO items (orderId, productId, quantity, price) VALUES ($1, $2, $3, $4);`,
-            element
-        );
-    }
-
-    const message = "Order created!"
-
-    res.status(201).json({ message: message });
-});
-
-app.get(`/order/list`, async (req, res) => {
-    const result = await pool.query("SELECT * FROM orders;");
-
-    res.json(result.rows);
-});
-
-app.get(`/order/:order_id`, async (req, res) =>{
-    const { order_id } = req.params;
-
-    const result = await pool.query(
-        "SELECT * FROM orders WHERE orderId = $1;",
-        [order_id]
-    );
-
-    res.json(result.rows);
-});
+app.use("/order", orderRoutes);
 
 app.listen(PORT, () => {
     console.log(`Server running in http://localhost:${PORT}`);
