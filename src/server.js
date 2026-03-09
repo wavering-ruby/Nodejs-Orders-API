@@ -4,7 +4,7 @@ dotenv.config();
 
 import express from "express";
 import { pool } from "./database.js";
-import orderRoutes from "./routes/orderRoutes.js"
+import orderRoutes from "./routes/orderRoutes.js";
 
 const app = express();
 const PORT = process.env.BACKEND_PORT;
