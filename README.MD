@@ -27,8 +27,8 @@ Follow the steps below to run the project locally.
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/your-username/orders-api.git
-cd orders-api
+git clone https://github.com/wavering-ruby/Nodejs-Orders-API.git
+cd <folder_name>
 ```
 
 ### 2. Install dependencies
